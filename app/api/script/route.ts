@@ -1,15 +1,10 @@
 // app/api/script/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
-import { generateGeminiScript } from '@/lib/geminiScriptGen';
+import { generateScriptFromOpenRouter } from '@/lib/openrouter';
 
-export async function POST(req) {
+export async function POST(req: NextRequest) {
   const { topic } = await req.json();
 
-  if (!topic) {
-    return NextResponse.json({ error: 'Topic is required' }, { status: 400 });
-  }
-
-  const script = await generateGeminiScript(topic);
+  const script = await generateScriptFromOpenRouter(topic || 'AI in Education');
   return NextResponse.json({ script });
 }
