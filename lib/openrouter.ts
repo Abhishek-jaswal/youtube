@@ -4,7 +4,7 @@ export async function generateScriptFromOpenRouter(topic: string) {
     headers: {
       Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': 'http://localhost:3000',
+      'HTTP-Referer': 'http://localhost:3000', // Replace on deployment
       'X-Title': 'YouTube Script Generator',
     },
     body: JSON.stringify({
@@ -12,15 +12,13 @@ export async function generateScriptFromOpenRouter(topic: string) {
       messages: [
         {
           role: 'user',
-          content: `Write a full YouTube video script on the topic "${topic}". It should have an engaging hook, body, and call to action.`,
+          content: `Write a full YouTube script on the topic: "${topic}". Include a hook, body, and call to action.`,
         },
       ],
     }),
   });
 
   const data = await res.json();
-  console.log('OpenRouter Response:', JSON.stringify(data, null, 2)); // Debug
-
   const content = data?.choices?.[0]?.message?.content;
   return content || '⚠️ No script returned.';
 }
